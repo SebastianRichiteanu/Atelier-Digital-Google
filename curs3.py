@@ -61,15 +61,5 @@
 # print(dir(__builtins__))
 #
 #
-# msg = 'coco'
-# def my_function():
-#     def my_second_function():
-#         msg = 'lolo'
-#         print(f'my_second_function: {msg}')
-#     msg = 'Hello world'
-#     my_second_function()
-#     print(msg)
 #
-# my_function()
-# print(msg)
 
