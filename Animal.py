@@ -44,6 +44,9 @@ class Person(Animal):
         if new_friend:
             self.friends.add(new_friend)
 
+    def speak(self):
+        print("Hello!")
+
     def __str__(self):
         return f"Person: {self.tag} - {self.name}, {self.years}"
 
@@ -74,3 +77,4 @@ print(maria.get_friends())
 print(maria)
 
 print(Person.id)
+maria.speak()
