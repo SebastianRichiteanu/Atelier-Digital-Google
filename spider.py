@@ -14,7 +14,6 @@ teams = []
 for team in team_rows:
     team_cell = team.find('a')
     team_name = team_cell.find(class_='hiddenMobile').text.strip()
-    # print(team_name)
     teams.append(team_name)
 
 print(teams)
