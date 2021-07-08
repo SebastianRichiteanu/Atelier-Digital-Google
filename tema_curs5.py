@@ -38,7 +38,7 @@ def read_and_print():
 
 
 def read_and_complete():
-    f = open("FRSah_leaders.json", 'r+') # can't use 'a' because it's a dictionary
+    f = open("FRSah_leaders.json", 'r+')
     leaders = f.read()
     leaders = json.loads(leaders)
     leaders['test'] = ('test', 'test@test.com')
