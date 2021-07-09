@@ -1,1 +1,2 @@
-# Atelier-Digital-Google
+# gad-python-gr-2
+python stuff 
