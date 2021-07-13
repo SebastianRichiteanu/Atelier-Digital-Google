@@ -7,7 +7,7 @@ class GUI:
     """This class is responsible for drawing the GUI."""
     def __init__(self):
         self.width = 800
-        self.height = 650
+        self.height = 700
 
         self.window = tkinter.Tk()
         self.window.title("GAD 06 Desktop Apps")
@@ -18,6 +18,9 @@ class GUI:
         self.is_content_loading = True
         self.employers = []
         self.users = []
+        #
+        self.current_employer = None
+        self.dropdown_name = tkinter.StringVar(self.window)
 
     def set_data(self, users=None, employers=None):
         self.is_content_loading = False
@@ -31,14 +34,31 @@ class GUI:
         self.employers = employers
         self.users = users
 
-        brand_name = employers[0].name if len(employers) > 0 else None
-        self.draw(brand_name=brand_name, users=users)
+        self.current_employer = employers[0] if len(employers) > 0 else None
+        self.dropdown_name.set(self.current_employer.name)
+
+        name_list = [x.name for x in employers]
+        dropdown = tkinter.OptionMenu(self.window, self.dropdown_name, *name_list, command=self.change_employer)
+        dropdown.pack()
+
+        self.draw(brand_name=self.current_employer.name, users=users)
+
+    def find_employer_by_name(self, name):
+        for employer in self.employers:
+            if employer.name == name:
+                return employer
+        return None
+
+    def change_employer(self, employer_name):
+        new_employer = self.find_employer_by_name(employer_name)
+        self.current_employer = new_employer
+        self.content_frame.change_employer_name(new_employer)
 
     def fire(self, user):
-        fire(user, self.employers[0])
+        fire(user, self.current_employer)
 
     def hire(self, user):
-        hire(user, self.employers[0])
+        hire(user, self.current_employer)
 
     def draw(self, brand_name=None, users=None):
         if self.is_content_loading:

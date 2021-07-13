@@ -3,29 +3,28 @@ from .generic_frames import RowFrame
 
 
 class EmployeeFrame(tkinter.Frame):
-    def __init__(self, user, fire, hire, bg_color, master, **kwargs):
+    def __init__(self, user, fire, hire, bg_color, employer, master, **kwargs):
         super().__init__(master, kwargs)
-
         self.user = user
         self.bg_color = bg_color
         self.fire = fire
         self.hire = hire
         self.row_frame = None
+        self.current_employer = employer
 
     @property
     def is_hired(self):
-        print(self.user.employees)
         if len(self.user.employees) == 0:
             return False
-
-        return True
+        if self.current_employer.get() in [x.employer.name for x in self.user.employees]:
+            return True
+        return False
 
     def toggle_employee(self):
         if self.is_hired:
             self.fire(self.user)
         else:
             self.hire(self.user)
-
         self.draw()
 
     def get_btn_data(self):
@@ -75,12 +74,14 @@ class EmployeeFrame(tkinter.Frame):
 
 
 class EmployeesFrame(tkinter.Frame):
-    def __init__(self, users, fire, hire, master, **kwargs):
+    def __init__(self, users, fire, hire, employer, master, **kwargs):
         super().__init__(master, kwargs)
 
         self.users = users
         self.fire = fire
         self.hire = hire
+        self.employer = employer
+        self.user_rows = []
 
     def draw_header(self):
         header_cols = list(map(lambda header_value: {
@@ -96,15 +97,21 @@ class EmployeesFrame(tkinter.Frame):
         header_frame.draw()
 
     def draw(self):
-        self.draw_header()
+
+        if self.user_rows is not None:
+            for row in self.user_rows:
+                row.pack_forget()
+        else:
+            self.draw_header()
 
         for index, user in enumerate(self.users):
-            row_color = "#fff" if index % 2 == 0 else "#eee",
+            row_color = "#fff" if index % 2 == 0 else "#eee"
             user_frame = EmployeeFrame(
                 user,
                 self.fire,
                 self.hire,
                 row_color,
+                self.employer,
                 self,
                 bg=row_color,
                 padx=10,
@@ -112,3 +119,6 @@ class EmployeesFrame(tkinter.Frame):
             )
             user_frame.pack(side=tkinter.TOP)
             user_frame.draw()
+            self.user_rows.append(user_frame)
+
+

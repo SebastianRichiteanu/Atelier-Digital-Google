@@ -11,6 +11,7 @@ class ContentFrame(tkinter.Frame):
         self.employees_frame = None
         self.fire = fire
         self.hire = hire
+        self.current_employer = tkinter.StringVar("")
 
     def draw(self, brand_name="N/A", users=None):
         if not users:
@@ -25,6 +26,15 @@ class ContentFrame(tkinter.Frame):
         )
         self.brand_label.pack(side=tkinter.TOP)
 
-        self.employees_frame = EmployeesFrame(users, self.fire, self.hire, self, bg="#fff", pady=10)
+        self.current_employer.set(brand_name)
+
+        self.employees_frame = EmployeesFrame(users, self.fire, self.hire, self.current_employer, self, bg="#fff", pady=10)
         self.employees_frame.pack(side=tkinter.TOP)
         self.employees_frame.draw()
+
+    def change_employer_name(self, employer):
+        self.brand_label['text'] = employer.name
+        self.current_employer.set(employer.name)
+        self.employees_frame.draw()
+
+
