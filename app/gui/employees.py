@@ -98,7 +98,7 @@ class EmployeesFrame(tkinter.Frame):
 
     def draw(self):
 
-        if self.user_rows is not None:
+        if len(self.user_rows):
             for row in self.user_rows:
                 row.pack_forget()
         else:
