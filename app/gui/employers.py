@@ -106,7 +106,6 @@ class EmployerFrame(tkinter.Frame):
         self.delete(self.employer)
         self.row_frame.pack_forget()
 
-
     def edit_employer(self):
         self.row_frame.pack_forget()
         self.draw_edit()
