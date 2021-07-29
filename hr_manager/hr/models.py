@@ -16,3 +16,5 @@ class Employer(MyModel):
 
     def __str__(self):
         return f'{type(self)} {self.id}'
+
+
