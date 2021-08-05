@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from django.core.validators import MinValueValidator
 
 
 class MyModel(models.Model):
@@ -11,10 +13,45 @@ class MyModel(models.Model):
 
 class Employer(MyModel):
     class Meta:
-        db_table = 'hr_employer'
-    name = models.CharField(max_length=255, unique=True)
+        db_table = 'employers'
+
+    name = models.CharField(max_length=255, unique=True, null=False)
+    owner= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null= False, default=1)
+    employees = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Employee', related_name="employees")
+
+    def get_employees_number(self):
+        return self.employees.count()
+    get_employees_number.short_description = "Employees number"
 
     def __str__(self):
-        return f'{type(self)} {self.id}'
+        return self.name
 
 
+class Employee(MyModel):
+    class Meta:
+        db_table = 'employees'
+
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    wage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=100.00,
+        null=False,
+        validators=[MinValueValidator(0.00)]
+    )
+
+    def first_name(self):
+        return self.user.first_name
+    first_name.short_description = "First Name"
+    first_name.admin_order_field = "user__first_name"
+
+    def last_name(self):
+        return self.user.last_name
+    last_name.short_description = "Last Name"
+    last_name.admin_order_field = "user__last_name"
+
+    def employer_name(self):
+        return self.employer.name
+    employer_name.short_description = "Employer"
+    employer_name.admin_order_filed = "employer__name"

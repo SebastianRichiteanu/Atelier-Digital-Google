@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <h3> Project developed in {{framework_name}} </h3>
     <p> This is my first template </p>
@@ -9,5 +10,6 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <img width=200 src="{% static 'image.jpg' %}">
 {% endblock %}
 
